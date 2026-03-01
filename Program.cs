@@ -8,18 +8,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=girlfriendrate.db"));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Build() satırından ÖNCE ekle:
+// CORS
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 });
 
 var app = builder.Build();
 
-// app.UseHttpsRedirection() satırının HEMEN ÜSTÜNE ekle:
+// CORS
 app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
@@ -30,11 +29,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.UseStaticFiles();
+
+// ✅ Minimal endpoints
+app.MapGet("/", () => Results.Ok("Lover Rate API is running!"));
+app.MapGet("/healthz", () => Results.Ok("Healthy"));
 
 app.Run();
