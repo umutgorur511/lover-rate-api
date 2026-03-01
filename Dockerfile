@@ -4,6 +4,10 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+# Gereken klasörleri oluştur (DB ve görseller)
+RUN mkdir -p /app/Data
+RUN mkdir -p /app/wwwroot/images
+
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
